@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_js"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/et_send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:text="发送" />
+
+
+        <Button
+            android:id="@+id/btn1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:text="连接socket" />
+
+
+        <TextView
+            android:id="@+id/btn2"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="findAndClick"
+            tools:text="UI查找该控件并输入值" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+
+            <CheckBox
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+
+            <CheckBox
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+
+            <CheckBox
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+
+            <!--<RadioGroup-->
+                <!--android:layout_width="120dp"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:orientation="horizontal">-->
+
+                <!--<RadioButton-->
+                    <!--android:layout_width="30dp"-->
+                    <!--android:layout_height="30dp" />-->
+                <!--<RadioButton-->
+                    <!--android:layout_width="30dp"-->
+                    <!--android:layout_height="30dp" />-->
+                <!--<RadioButton-->
+                    <!--android:layout_width="30dp"-->
+                    <!--android:layout_height="30dp" />-->
+                <!--<RadioButton-->
+                    <!--android:layout_width="30dp"-->
+                    <!--android:layout_height="30dp" />-->
+            <!--</RadioGroup>-->
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2000dp" />
+    </LinearLayout>
+</ScrollView>
