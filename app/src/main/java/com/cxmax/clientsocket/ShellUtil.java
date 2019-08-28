@@ -58,7 +58,7 @@ public class ShellUtil {
 
         DataOutputStream os = null;
         try {
-            process = Runtime.getRuntime().exec(COMMAND_SH);
+            process = Runtime.getRuntime().exec(COMMAND_SU);
             os = new DataOutputStream(process.getOutputStream());
             for (String command : commands) {
                 if (command == null) {
