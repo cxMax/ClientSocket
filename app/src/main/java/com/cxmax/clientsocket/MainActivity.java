@@ -109,10 +109,14 @@ public class MainActivity extends AppCompatActivity {
         OutputStream os = null;
         BufferedWriter bw = null;
         BufferedReader br = null;
-        if (socket == null || socket.isClosed()) {
-            connect();
-        }
         try {
+//            socket = new Socket(InetAddress.getLocalHost(), 10086);
+//            if (socket != null) {
+//                socket.close();
+//            }
+//            if (socket == null) {
+                socket = new Socket("127.0.0.1", 10086);
+//            }
 
             //构建IO
             is = socket.getInputStream();
@@ -120,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
             bw = new BufferedWriter(new OutputStreamWriter(os));
             //向服务器端发送一条消息
-            bw.write(Constants.index12);
+            bw.write(Constants.index5);
             bw.flush();
 
             //读取服务器返回的消息
@@ -133,27 +137,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e2) {
             // TODO Auto-generated catch block
             e2.printStackTrace();
-        } finally {
-//            try {
-//                if (is != null) {
-//                    is.close();
-//                }
-//                if (os != null) {
-//                    os.close();
-//                }
-//                if (bw != null) {
-//                    bw.close();
-//                }
-//                if (br != null) {
-//                    br.close();
-//                }
-//                if (socket != null) {
-//                    socket.close();
-//                }
-//            } catch (IOException e3) {
-//                // TODO Auto-generated catch block
-//                e3.printStackTrace();
-//            }
         }
 
     }

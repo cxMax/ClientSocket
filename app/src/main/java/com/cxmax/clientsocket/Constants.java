@@ -17,5 +17,5 @@ public class Constants {
     /**
      * 锁屏
      */
-    public static String index12 = "{\"index\":12}";
+    public static String index12 = "{\"index\":12}\n";
 }
