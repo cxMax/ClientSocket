@@ -39,18 +39,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        doWorkBackground(() -> {
-            try {
-                // 等界面先起来再去连接
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            // String command = "sh -c 'CLASSPATH=/data/app/com.wx.android.mobileaccessibility-1/base.apk /system/bin/app_process /system/bin com.android.support.core/Entrance";
-            String command = "am instrument -w -r -e debug false -e class com.android.support.test.UITestEntrance com.wx.android.mobileaccessibility/android.test.InstrumentationTestRunner";
-            ShellUtil.CommandResult rs = ShellUtil.execCommand(command, true);
-            Log.i(TAG, "run: " + rs.result + "-------" + rs.responseMsg + "-------" + rs.errorMsg);
-        });
+        // todo 以后这里通过 Install的main函数去启动
+//        doWorkBackground(() -> {
+//            try {
+//                // 等界面先起来再去连接
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            // String command = "sh -c 'CLASSPATH=/data/app/com.wx.android.mobileaccessibility-1/base.apk /system/bin/app_process /system/bin com.android.support.core/Entrance";
+//            String command = "am instrument -w -r -e debug false -e class com.android.support.test.UITestEntrance com.wx.android.mobileaccessibility/android.test.InstrumentationTestRunner";
+//            ShellUtil.CommandResult rs = ShellUtil.execCommand(command, true);
+//            Log.i(TAG, "run: " + rs.result + "-------" + rs.responseMsg + "-------" + rs.errorMsg);
+//        });
         sendBtn = (Button) findViewById(R.id.btn_send);
         connect_socket = (Button) findViewById(R.id.connect_socket);
         btn2 = (TextView) findViewById(R.id.btn2);

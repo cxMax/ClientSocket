@@ -11,10 +11,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * describe :
+ * describe : 以后直接用 {@link Install} 这个类，run main 函数启动
  * usage :
  * Created by caixi-hj on 2019/6/18.
  **/
+@Deprecated
 public class ShellUtil {
 
     /**
