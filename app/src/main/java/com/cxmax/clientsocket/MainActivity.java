@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,6 +24,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     //    private WifiManager w = null;
     private Socket socket;
     private int imageNumber = 0;
+    // 联系人数据
+    private JSONArray contactArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +87,27 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "onCreate: btn_send_image");
             doWorkBackground(() -> sendBitmap());
         });
+
+        // 发送联系人数据
+        sendBtn.setEnabled(false);
+        findViewById(R.id.btn_query_contacts).setOnClickListener(v -> {
+            doWorkBackground(() -> {
+                List<ContactBean> infos = ContactUtils.getAllContacts(MainActivity.this);
+                contactArray = new JSONArray();
+                try {
+                    for (ContactBean item : infos) {
+                        JSONObject obj = new JSONObject();
+                        obj.put("id", item.id);
+                        obj.put("name", item.name);
+                        obj.put("number", item.number);
+                        contactArray.put(obj);
+                    }
+                    runOnUiThread(() -> sendBtn.setEnabled(true));
+                } catch (JSONException e) {
+                    Log.d(TAG, "onCreate: btn_query_contacts:" + e);
+                }
+            });
+        });
     }
 
     /**
@@ -124,7 +149,9 @@ public class MainActivity extends AppCompatActivity {
 
             bw = new BufferedWriter(new OutputStreamWriter(os));
             //向服务器端发送一条消息
-            bw.write(Constants.index5);
+            // bw.write(Constants.index5);
+            String toStr = "{\"index\":22, contact:" + contactArray.toString() + "}\n";
+            bw.write(toStr);
             bw.flush();
 
             //读取服务器返回的消息

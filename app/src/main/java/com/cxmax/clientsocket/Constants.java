@@ -9,6 +9,7 @@ package com.cxmax.clientsocket;
  */
 public class Constants {
 
+    public static final String TAG = "WxMobile";
     /**
      * 往edit text 输入值
      */
