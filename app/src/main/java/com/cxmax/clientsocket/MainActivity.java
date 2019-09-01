@@ -1,5 +1,7 @@
 package com.cxmax.clientsocket;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -24,6 +26,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -88,24 +91,45 @@ public class MainActivity extends AppCompatActivity {
             doWorkBackground(() -> sendBitmap());
         });
 
+        List<ContactBean> infos = new ArrayList<>();
         // 发送联系人数据
         sendBtn.setEnabled(false);
+        SharedPreferences sps = getSharedPreferences("tmp_contacts", Context.MODE_PRIVATE);
         findViewById(R.id.btn_query_contacts).setOnClickListener(v -> {
             doWorkBackground(() -> {
-                List<ContactBean> infos = ContactUtils.getAllContacts(MainActivity.this);
-                contactArray = new JSONArray();
+                infos.clear();
+                infos.addAll(ContactUtils.getAllContacts(MainActivity.this));
+
                 try {
+                    contactArray = new JSONArray();
                     for (ContactBean item : infos) {
                         JSONObject obj = new JSONObject();
+
                         obj.put("id", item.id);
                         obj.put("name", item.name);
-                        obj.put("number", item.number);
+                        // handle phone number
+                        JSONArray phones = new JSONArray();
+                        for (ContactBean.Phone p : item.phones) {
+                            JSONObject obj2 = new JSONObject();
+                            obj2.put("type", p.type);
+                            obj2.put("number", p.number);
+                            phones.put(obj2);
+                        }
+                        obj.put("phones", phones);
                         contactArray.put(obj);
                     }
-                    runOnUiThread(() -> sendBtn.setEnabled(true));
                 } catch (JSONException e) {
-                    Log.d(TAG, "onCreate: btn_query_contacts:" + e);
+                    Log.e(TAG, "onCreate: btn_insert_contacts, e:" + e);
                 }
+
+                Log.d(TAG, "onCreate: getAll size:" + infos.size());
+                runOnUiThread(() -> sendBtn.setEnabled(true));
+            });
+        });
+
+        findViewById(R.id.btn_remove_contacts).setOnClickListener(v -> {
+            doWorkBackground(() -> {
+                ContactUtils.deleteContacts(MainActivity.this, infos);
             });
         });
     }
