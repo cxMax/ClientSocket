@@ -62,9 +62,17 @@
             android:layout_marginTop="5dp"
             android:text="删除联系人" />
 
+        <Button
+            android:id="@+id/btn_lock_unlock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:text="锁屏/解锁屏幕" />
+
 
         <TextView
-            android:id="@+id/btn2"
+            android:id="@+id/find_tv"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"

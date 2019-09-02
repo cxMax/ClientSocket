@@ -19,4 +19,14 @@ public class Constants {
      * 锁屏
      */
     public static String index12 = "{\"index\":12}\n";
+
+    /**
+     * 解锁屏幕
+     */
+    public static String index13 = "{\"index\":13}\n";
+
+    /**
+     * 锁屏
+     */
+    public static String index23 = "{\"index\":23}\n";
 }

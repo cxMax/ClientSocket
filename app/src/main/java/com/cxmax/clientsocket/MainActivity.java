@@ -32,8 +32,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "WxMobile/ClientMain";
-    private Button sendBtn, connect_socket;
-    private TextView btn2;
+    private Button sendBtn, connect_socket, btn_lock_unlock;
+    private TextView find_tv;
     private EditText et;
     private TextView tv;
     //    private WifiManager w = null;
@@ -59,16 +59,18 @@ public class MainActivity extends AppCompatActivity {
 //            ShellUtil.CommandResult rs = ShellUtil.execCommand(command, true);
 //            Log.i(TAG, "run: " + rs.result + "-------" + rs.responseMsg + "-------" + rs.errorMsg);
 //        });
-        sendBtn = (Button) findViewById(R.id.btn_send);
-        connect_socket = (Button) findViewById(R.id.connect_socket);
-        btn2 = (TextView) findViewById(R.id.btn2);
-        et = (EditText) findViewById(R.id.et_send);
-        tv = (TextView) findViewById(R.id.tv_js);
+        sendBtn = findViewById(R.id.btn_send);
+        connect_socket = findViewById(R.id.connect_socket);
+        find_tv = findViewById(R.id.find_tv);
+        et = findViewById(R.id.et_send);
+        tv = findViewById(R.id.tv_js);
 
         connect_socket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                doWorkBackground(() -> connect());
+                doWorkBackground(() -> {
+                    connect();
+                });
             }
         });
 
@@ -76,10 +78,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final String string = et.getText().toString();
-                doWorkBackground(() -> actionPerformed());
+                doWorkBackground(() -> {
+                    String command = "{\"index\":22, contact:" + contactArray.toString() + "}\n";
+                    actionPerformed(command);
+                });
             }
         });
-        btn2.setOnClickListener(new View.OnClickListener() {
+        find_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "通过UI查找并点击", Toast.LENGTH_SHORT).show();
@@ -132,6 +137,20 @@ public class MainActivity extends AppCompatActivity {
                 ContactUtils.deleteContacts(MainActivity.this, infos);
             });
         });
+        findViewById(R.id.btn_lock_unlock).setOnClickListener(view -> {
+            doWorkBackground(() -> {
+                actionPerformed(Constants.index12);
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(2000);
+                        actionPerformed(Constants.index13);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }).start();
+            });
+        });
     }
 
     /**
@@ -153,19 +172,13 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 发送指令数据
      */
-    public void actionPerformed() {
+    public void actionPerformed(String command) {
         InputStream is = null;
         OutputStream os = null;
         BufferedWriter bw = null;
         BufferedReader br = null;
         try {
-//            socket = new Socket(InetAddress.getLocalHost(), 10086);
-//            if (socket != null) {
-//                socket.close();
-//            }
-//            if (socket == null) {
                 socket = new Socket("127.0.0.1", 10086);
-//            }
 
             //构建IO
             is = socket.getInputStream();
@@ -174,8 +187,7 @@ public class MainActivity extends AppCompatActivity {
             bw = new BufferedWriter(new OutputStreamWriter(os));
             //向服务器端发送一条消息
             // bw.write(Constants.index5);
-            String toStr = "{\"index\":22, contact:" + contactArray.toString() + "}\n";
-            bw.write(toStr);
+            bw.write(command);
             bw.flush();
 
             //读取服务器返回的消息
@@ -183,17 +195,17 @@ public class MainActivity extends AppCompatActivity {
             String mess = br.readLine();
             System.out.println("服务器："+mess);
         } catch (UnknownHostException e1) {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
         } catch (IOException e2) {
-            // TODO Auto-generated catch block
             e2.printStackTrace();
         }
-
     }
 
     public void sendBitmap() {
         try {
+
+            socket = new Socket("127.0.0.1", 10086);
+
             OutputStream os = socket.getOutputStream();
             InputStream is = socket.getInputStream();
 
