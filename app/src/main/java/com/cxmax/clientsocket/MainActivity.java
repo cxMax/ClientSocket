@@ -3,6 +3,8 @@ package com.cxmax.clientsocket;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -93,7 +95,9 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_send_image).setOnClickListener(v -> {
             Log.d(TAG, "onCreate: btn_send_image");
-            doWorkBackground(() -> sendBitmap());
+            doWorkBackground(() -> {
+                sendBitmap();
+            });
         });
 
         List<ContactBean> infos = new ArrayList<>();
@@ -140,17 +144,20 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_lock_unlock).setOnClickListener(view -> {
             doWorkBackground(() -> {
                 actionPerformed(Constants.index12);
-                new Thread(() -> {
-                    try {
-                        Thread.sleep(2000);
-                        actionPerformed(Constants.index13);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
 
-                }).start();
             });
         });
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                doWorkBackground(() -> {
+                    Log.e(TAG, "run: 发送了index13");
+                    actionPerformed(Constants.index13);
+
+                });
+
+            }
+        }, 10000);
     }
 
     /**

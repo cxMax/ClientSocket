@@ -12,6 +12,7 @@ import java.util.List;
  * @Version: 1.0
  */
 public class ContactBean {
+
     public String id;
     public String name;
     public List<Phone> phones;
