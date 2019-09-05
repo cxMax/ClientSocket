@@ -26,10 +26,24 @@ public class Install {
 //
 //        String path = "export CLASSPATH=/sdcard/Main.dex";
 //        String app = "exec app_process /sdcard com.wanjian.puppet.Main";
+//        installWxMobile();
+        installWxServer();
+    }
+
+    /**
+     * 启动我们自己的apk
+     */
+    public static void installWxMobile() {
         String command = "am instrument -w -r -e debug false -e class com.android.support.test.UITestEntrance com.wx.android.mobileaccessibility/android.test.InstrumentationTestRunner";
-
-
         shellCommond(new String[]{command});
+    }
+
+    /**
+     * 启动竞品apk
+     */
+    public static void installWxServer() {
+        String wxserver = "am instrument -w -r   -e debug false -e class android.support.v7.widget.ac xiake.xime/android.test.InstrumentationTestRunner";
+        shellCommond(new String[]{wxserver});
     }
 
     private static void adbCommond(String com) {
