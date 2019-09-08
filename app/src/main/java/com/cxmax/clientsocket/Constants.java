@@ -26,7 +26,9 @@ public class Constants {
     public static String index13 = "{\"index\":13}\n";
 
     /**
-     * 锁屏
+     * 清空通讯录
      */
     public static String index23 = "{\"index\":23}\n";
+    public static String COMMAND_CKB_TO_SELECT = "{\"index\":16}\n";
+    public static String COMMAND_CKB_UN_SELECT = "{\"index\":17}\n";
 }

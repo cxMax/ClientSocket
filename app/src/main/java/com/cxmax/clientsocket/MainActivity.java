@@ -67,23 +67,15 @@ public class MainActivity extends AppCompatActivity {
         et = findViewById(R.id.et_send);
         tv = findViewById(R.id.tv_js);
 
-        connect_socket.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doWorkBackground(() -> {
-                    connect();
-                });
-            }
+        connect_socket.setOnClickListener(v -> {
+            doWorkBackground(() -> connect());
         });
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String string = et.getText().toString();
-                doWorkBackground(() -> {
-                    String command = "{\"index\":22, contact:" + contactArray.toString() + "}\n";
-                    actionPerformed(command);
-                });
+                doWorkBackground(() -> actionPerformed(string));
             }
         });
         find_tv.setOnClickListener(new View.OnClickListener() {
@@ -100,10 +92,9 @@ public class MainActivity extends AppCompatActivity {
             });
         });
 
+        // --------- 联系人 begin --------- //
         List<ContactBean> infos = new ArrayList<>();
-        // 发送联系人数据
-        sendBtn.setEnabled(false);
-        SharedPreferences sps = getSharedPreferences("tmp_contacts", Context.MODE_PRIVATE);
+        findViewById(R.id.btn_send_contacts).setEnabled(false);
         findViewById(R.id.btn_query_contacts).setOnClickListener(v -> {
             doWorkBackground(() -> {
                 infos.clear();
@@ -132,15 +123,26 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 Log.d(TAG, "onCreate: getAll size:" + infos.size());
-                runOnUiThread(() -> sendBtn.setEnabled(true));
+                runOnUiThread(() -> findViewById(R.id.btn_send_contacts).setEnabled(true));
             });
         });
-
         findViewById(R.id.btn_remove_contacts).setOnClickListener(v -> {
             doWorkBackground(() -> {
                 ContactUtils.deleteContacts(MainActivity.this, infos);
             });
         });
+        findViewById(R.id.btn_send_contacts).setOnClickListener( v -> {
+            if (contactArray == null) {
+                Toast.makeText(MainActivity.this, "请先点击查看联系人", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            doWorkBackground(() -> {
+                String command = "{\"index\":22, contact:" + contactArray.toString() + "}\n";
+                actionPerformed(command);
+            });
+        });
+        // --------- 联系人 end --------- //
+
         findViewById(R.id.btn_lock_unlock).setOnClickListener(view -> {
             doWorkBackground(() -> {
                 actionPerformed(Constants.index12);
@@ -153,11 +155,26 @@ public class MainActivity extends AppCompatActivity {
                 doWorkBackground(() -> {
                     Log.e(TAG, "run: 发送了index13");
                     actionPerformed(Constants.index13);
-
                 });
 
             }
         }, 10000);
+        // --------- checkbox begin --------- //
+        findViewById(R.id.btn_ckbox_check).setOnClickListener(new View.OnClickListener() {
+            String command = Constants.COMMAND_CKB_UN_SELECT;
+            @Override
+            public void onClick(View view) {
+                doWorkBackground(() -> {
+                    if (Constants.COMMAND_CKB_TO_SELECT.equals(command)) {
+                        command = Constants.COMMAND_CKB_UN_SELECT;
+                    } else {
+                        command = Constants.COMMAND_CKB_TO_SELECT;
+                    }
+                    actionPerformed(command);
+                });
+            }
+        });
+        // --------- checkbox begin --------- //
     }
 
     /**
