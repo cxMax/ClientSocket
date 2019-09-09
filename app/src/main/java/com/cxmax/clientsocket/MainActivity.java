@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Base64;
 import android.util.Log;
+import android.util.TimeUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +31,13 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,11 +51,24 @@ public class MainActivity extends AppCompatActivity {
     private int imageNumber = 0;
     // 联系人数据
     private JSONArray contactArray;
+    private ExecutorService service;
+
+    private void initPool() {
+        service = new ThreadPoolExecutor(
+                1, 1,
+                0L, TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<Runnable>(), runnable -> {
+                    Thread wt = new Thread(runnable);
+                    wt.setPriority(Thread.NORM_PRIORITY + 1);
+                    return wt;
+                });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initPool();
         // todo 以后这里通过 Install的main函数去启动
 //        doWorkBackground(() -> {
 //            try {
@@ -145,20 +166,21 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_lock_unlock).setOnClickListener(view -> {
             doWorkBackground(() -> {
+                Log.i(TAG, "onCreate: will send lock");
                 actionPerformed(Constants.index12);
+            });
 
+            doWorkBackground(() -> {
+                try {
+                    Log.i(TAG, "onCreate: will send unlock");
+                    TimeUnit.SECONDS.sleep(10);
+                    actionPerformed(Constants.index13);
+                    Log.i(TAG, "onCreate: will send unlock end");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             });
         });
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                doWorkBackground(() -> {
-                    Log.e(TAG, "run: 发送了index13");
-                    actionPerformed(Constants.index13);
-                });
-
-            }
-        }, 10000);
         // --------- checkbox begin --------- //
         findViewById(R.id.btn_ckbox_check).setOnClickListener(new View.OnClickListener() {
             String command = Constants.COMMAND_CKB_UN_SELECT;
@@ -175,6 +197,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         // --------- checkbox begin --------- //
+        // --------- phone mute begin --------- //
+        findViewById(R.id.btn_phone_mute).setOnClickListener(new View.OnClickListener() {
+            String command = Constants.COMMAND_MUTE_OFF;
+            @Override
+            public void onClick(View view) {
+                doWorkBackground(() -> {
+                    if (Constants.COMMAND_MUTE_OFF.equals(command)) {
+                        command = Constants.COMMAND_MUTE_ON;
+                    } else {
+                        command = Constants.COMMAND_MUTE_OFF;
+                    }
+                    actionPerformed(command);
+                });
+            }
+        });
+        // --------- phone mute begin --------- //
     }
 
     /**
@@ -187,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
                 socket.close();
             }
             socket = new Socket("127.0.0.1", 10086);
+            socket.setSoTimeout(1000 * 60);
         } catch (Exception e) {
             Log.e(TAG, "connect: e:" + e);
         }
@@ -202,7 +241,9 @@ public class MainActivity extends AppCompatActivity {
         BufferedWriter bw = null;
         BufferedReader br = null;
         try {
-                socket = new Socket("127.0.0.1", 10086);
+            if (socketUnavailable()) {
+                return;
+            }
 
             //构建IO
             is = socket.getInputStream();
@@ -213,11 +254,12 @@ public class MainActivity extends AppCompatActivity {
             // bw.write(Constants.index5);
             bw.write(command);
             bw.flush();
+            Log.d(TAG, "actionPerformed: 发送命令结束");
 
             //读取服务器返回的消息
-            br = new BufferedReader(new InputStreamReader(is));
-            String mess = br.readLine();
-            System.out.println("服务器："+mess);
+            // br = new BufferedReader(new InputStreamReader(is));
+            // String mess = br.readLine();
+            // Log.d(TAG, "actionPerformed: 服务器：" + mess);
         } catch (UnknownHostException e1) {
             e1.printStackTrace();
         } catch (IOException e2) {
@@ -227,8 +269,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendBitmap() {
         try {
-
-            socket = new Socket("127.0.0.1", 10086);
+            if (socketUnavailable()) {
+                return;
+            }
 
             OutputStream os = socket.getOutputStream();
             InputStream is = socket.getInputStream();
@@ -269,20 +312,31 @@ public class MainActivity extends AppCompatActivity {
      * @param work 需要执行的任务
      */
     private void doWorkBackground(Runnable work) {
-        Thread wt = new Thread(work);
-        wt.setPriority(Thread.NORM_PRIORITY + 1);
-        wt.start();
+        service.submit(work);
+        Log.i(TAG, "doWorkBackground: " + work);
+    }
+
+    private boolean socketUnavailable() {
+        boolean unavailable = socket == null || socket.isClosed();
+        if (unavailable) {
+            sendBtn.post(() -> {
+                Toast.makeText(MainActivity.this, "请先点击连接Socket", Toast.LENGTH_SHORT).show();
+            });
+        }
+        return unavailable;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         clear();
+        service.shutdownNow();
     }
 
     private void clear() {
         if (socket != null) {
             IOUtil.silenceClose(socket);
+            socket = null;
         }
     }
 }

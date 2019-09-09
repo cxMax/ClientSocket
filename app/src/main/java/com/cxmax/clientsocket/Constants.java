@@ -31,4 +31,9 @@ public class Constants {
     public static String index23 = "{\"index\":23}\n";
     public static String COMMAND_CKB_TO_SELECT = "{\"index\":16}\n";
     public static String COMMAND_CKB_UN_SELECT = "{\"index\":17}\n";
+    /**
+     * 开/关静音
+     */
+    public static String COMMAND_MUTE_ON = "{\"index\":8}\n";
+    public static String COMMAND_MUTE_OFF = "{\"index\":9}\n";
 }

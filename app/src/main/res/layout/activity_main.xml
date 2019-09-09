@@ -96,6 +96,14 @@
             android:layout_below="@id/btn_lock_unlock"
             android:text="CheckBox全选/反选"/>
 
+        <Button
+            android:id="@+id/btn_phone_mute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/btn_ckbox_check"
+            android:layout_alignTop="@id/btn_ckbox_check"
+            android:layout_marginStart="5dp"
+            android:text="静音开/关"/>
         <TextView
             android:id="@+id/find_tv"
             android:layout_width="match_parent"
