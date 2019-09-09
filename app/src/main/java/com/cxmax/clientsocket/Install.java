@@ -26,8 +26,8 @@ public class Install {
 //
 //        String path = "export CLASSPATH=/sdcard/Main.dex";
 //        String app = "exec app_process /sdcard com.wanjian.puppet.Main";
-//        installWxMobile();
-        installWxServer();
+        installWxMobile();
+//        installWxServer();
     }
 
     /**
