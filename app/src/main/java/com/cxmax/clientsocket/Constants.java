@@ -13,7 +13,7 @@ public class Constants {
     /**
      * 往edit text 输入值
      */
-    public static String index5 = "{\"index\": 5,\"ui\": {\"index\": -1,\"text\": \"\",\"resource-id\": \"\",\"content-desc\": \"et_send\",\"class\": \"android.widget.EditText\"},\"input\": \"我是\"}\n";
+    public static String index5 = "{\"index\": 5,\"ui\": {\"index\": -1,\"text\": \"\",\"resource_id\": \"\",\"content_desc\": \"et_send\",\"class\": \"android.widget.EditText\"},\"input\": \"我是\"}\n";
 
     /**
      * 锁屏
