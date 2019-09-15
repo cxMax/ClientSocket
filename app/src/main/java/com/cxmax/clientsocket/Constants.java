@@ -36,4 +36,5 @@ public class Constants {
      */
     public static String COMMAND_MUTE_ON = "{\"index\":8}\n";
     public static String COMMAND_MUTE_OFF = "{\"index\":9}\n";
+    public static String COMMAND_SEND_SMS = "{\"index\":24, \"sms\": {\"number\":\"10086\",\"message\":\"10086 txt2\"}}\n";
 }

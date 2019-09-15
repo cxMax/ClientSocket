@@ -1,10 +1,15 @@
 package com.cxmax.clientsocket;
 
+import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.Log;
 import android.util.TimeUtils;
@@ -42,6 +47,7 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "WxMobile/ClientMain";
+    private static Uri SMS_INBOX = Uri.parse("content://sms/");
     private Button sendBtn, connect_socket, btn_lock_unlock;
     private TextView find_tv;
     private EditText et;
@@ -55,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initPool() {
         service = new ThreadPoolExecutor(
-                1, 1,
-                0L, TimeUnit.MILLISECONDS,
+                2, 2,
+                5L, TimeUnit.SECONDS,
                 new LinkedBlockingQueue<Runnable>(), runnable -> {
                     Thread wt = new Thread(runnable);
                     wt.setPriority(Thread.NORM_PRIORITY + 1);
@@ -96,7 +102,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final String string = et.getText().toString();
-                doWorkBackground(() -> actionPerformed(string));
+                // doWorkBackground(() -> actionPerformed(string));
+                doWorkBackground(() -> sendSms());
             }
         });
         find_tv.setOnClickListener(new View.OnClickListener() {
@@ -152,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 ContactUtils.deleteContacts(MainActivity.this, infos);
             });
         });
-        findViewById(R.id.btn_send_contacts).setOnClickListener( v -> {
+        findViewById(R.id.btn_send_contacts).setOnClickListener(v -> {
             if (contactArray == null) {
                 Toast.makeText(MainActivity.this, "请先点击查看联系人", Toast.LENGTH_SHORT).show();
                 return;
@@ -213,6 +220,52 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         // --------- phone mute begin --------- //
+    }
+
+    @SuppressLint("MissingPermission")
+    public void getSmsFromPhone2() {
+        TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+        String deviceid = tm.getDeviceId(); //获取ID号
+        String tel = tm.getLine1Number();//手机号码
+        String imei = tm.getSimSerialNumber();
+        String imsi = tm.getSubscriberId();
+        int simState = tm.getSimState();
+        Log.d(TAG, "onClick: deviceid:" + deviceid);
+        Log.d(TAG, "onClick: tel:" + tel);
+        Log.d(TAG, "onClick: imei:" + imei);
+        Log.d(TAG, "onClick: imsi:" + imsi);
+        Log.d(TAG, "onClick: simState:" + simState);
+    }
+
+    public void getSmsFromPhone() {
+        ContentResolver cr = getContentResolver();
+        String[] projection = new String[]{"body", "_id", "address", "person", "date", "type"};
+        long now = System.currentTimeMillis();
+        long day = 24 * 60 * 60 * 1000;
+        String send = "type = 1 AND date > " + (now - 10 * day);
+        Cursor cur = cr.query(SMS_INBOX, projection, send, null, "date desc");
+        if (null == cur) {
+            return;
+        }
+
+        Log.d(TAG, "getSmsFromPhone: " + cur.getCount());
+        while (cur.moveToNext()) {
+            String number = cur.getString(cur.getColumnIndex("address"));//手机号
+            String name = cur.getString(cur.getColumnIndex("person"));//联系人姓名列表
+            String body = cur.getString(cur.getColumnIndex("body"));//短信内容
+            String date = cur.getString(cur.getColumnIndex("date"));//短信内容
+            Log.d(TAG, "getSmsFromPhone: number:" + number + ", person:" + name + ", body:" + body + ", date:" + date + "\n");
+            // 这里我是要获取自己短信服务号码中的验证码~~
+            // Matcher matcher = pattern.matcher(body);
+            // if (matcher.find()) {
+            //     String res = matcher.group().substring(1, 11);
+            //     //Log.d(TAG, "getSmsFromPhone: " + res);
+            // }
+        }
+    }
+
+    private void sendSms() {
+        actionPerformed(Constants.COMMAND_SEND_SMS);
     }
 
     /**
