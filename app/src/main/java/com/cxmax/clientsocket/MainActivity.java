@@ -103,7 +103,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String string = et.getText().toString();
                 // doWorkBackground(() -> actionPerformed(string));
-                doWorkBackground(() -> sendSms());
+                // doWorkBackground(() -> sendSms());
+                doWorkBackground(() -> getVerifyCode());
             }
         });
         find_tv.setOnClickListener(new View.OnClickListener() {
@@ -266,6 +267,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void sendSms() {
         actionPerformed(Constants.COMMAND_SEND_SMS);
+    }
+
+    private void getVerifyCode() {
+        actionPerformed(Constants.COMMAND_GET_VERIFY_CODE);
     }
 
     /**
