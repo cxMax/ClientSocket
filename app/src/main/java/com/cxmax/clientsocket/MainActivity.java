@@ -104,7 +104,8 @@ public class MainActivity extends AppCompatActivity {
                 final String string = et.getText().toString();
                 // doWorkBackground(() -> actionPerformed(string));
                 // doWorkBackground(() -> sendSms());
-                doWorkBackground(() -> getVerifyCode());
+                // doWorkBackground(() -> getVerifyCode());
+                doWorkBackground(() -> actionPerformed(Constants.COMMAND_STORAGE_INFO));
             }
         });
         find_tv.setOnClickListener(new View.OnClickListener() {
