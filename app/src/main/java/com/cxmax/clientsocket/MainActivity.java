@@ -94,6 +94,21 @@ public class MainActivity extends AppCompatActivity {
         et = findViewById(R.id.et_send);
         tv = findViewById(R.id.tv_js);
 
+        firstLineButtons();
+        secondLineButtons();
+        thirdLineButtons();
+        forthLineButtons();
+        fifthLineButtons();
+
+        find_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "通过UI查找并点击", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void firstLineButtons() {
         connect_socket.setOnClickListener(v -> {
             doWorkBackground(() -> connect());
         });
@@ -108,21 +123,23 @@ public class MainActivity extends AppCompatActivity {
                 doWorkBackground(() -> actionPerformed(Constants.COMMAND_STORAGE_INFO));
             }
         });
-        find_tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "通过UI查找并点击", Toast.LENGTH_SHORT).show();
-            }
-        });
+    }
 
+    private void secondLineButtons() {
         findViewById(R.id.btn_send_image).setOnClickListener(v -> {
             Log.d(TAG, "onCreate: btn_send_image");
             doWorkBackground(() -> {
-                sendBitmap();
+                sendBitmap(); // custom data send logic
             });
         });
+        findViewById(R.id.btn_get_number).setOnClickListener(view -> {
+            doWorkBackground(() -> {
+                actionPerformed(Constants.COMMAND_GET_PHONE_NUMBER);
+            });
+        });
+    }
 
-        // --------- 联系人 begin --------- //
+    private void thirdLineButtons() {
         List<ContactBean> infos = new ArrayList<>();
         findViewById(R.id.btn_send_contacts).setEnabled(false);
         findViewById(R.id.btn_query_contacts).setOnClickListener(v -> {
@@ -171,8 +188,9 @@ public class MainActivity extends AppCompatActivity {
                 actionPerformed(command);
             });
         });
-        // --------- 联系人 end --------- //
+    }
 
+    private void forthLineButtons() {
         findViewById(R.id.btn_lock_unlock).setOnClickListener(view -> {
             doWorkBackground(() -> {
                 Log.i(TAG, "onCreate: will send lock");
@@ -190,6 +208,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         });
+    }
+
+    private void fifthLineButtons() {
         // --------- checkbox begin --------- //
         findViewById(R.id.btn_ckbox_check).setOnClickListener(new View.OnClickListener() {
             String command = Constants.COMMAND_CKB_UN_SELECT;
@@ -205,7 +226,6 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
-        // --------- checkbox begin --------- //
         // --------- phone mute begin --------- //
         findViewById(R.id.btn_phone_mute).setOnClickListener(new View.OnClickListener() {
             String command = Constants.COMMAND_MUTE_OFF;
@@ -221,7 +241,6 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
-        // --------- phone mute begin --------- //
     }
 
     @SuppressLint("MissingPermission")
