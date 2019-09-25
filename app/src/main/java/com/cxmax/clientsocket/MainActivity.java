@@ -59,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
     private JSONArray contactArray;
     private ExecutorService service;
 
+    private volatile boolean isHeartBeating = false;
+    private static final int SOCKET_HEART_BEATING = 59;
+
     private void initPool() {
         service = new ThreadPoolExecutor(
                 2, 2,
@@ -208,6 +211,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         });
+
+        // 连接socket之后，自动开启心跳，可以不需要按钮的点击
+        findViewById(R.id.btn_heart_beating).setOnClickListener(v -> {
+            heartBeating();
+        });
     }
 
     private void fifthLineButtons() {
@@ -304,7 +312,10 @@ public class MainActivity extends AppCompatActivity {
             }
             socket = new Socket("127.0.0.1", 10086);
             socket.setKeepAlive(true);
+            // 读写超时时间，3 分钟
             socket.setSoTimeout(1000 * 60 * 3);
+            // 开始心跳，59s 一次心跳包
+            heartBeating();
         } catch (Exception e) {
             Log.e(TAG, "connect: e:" + e);
         }
@@ -385,6 +396,48 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "sendBitMap: succeed");
     }
 
+    private void heartBeating() {
+        if (socket == null || isHeartBeating) {
+            return;
+        }
+        isHeartBeating = true;
+        doWorkBackground(() -> {
+            InputStream is = null;
+            OutputStream os = null;
+            BufferedWriter bw = null;
+            BufferedReader br = null;
+
+            try {
+                is = socket.getInputStream();
+                os = socket.getOutputStream();
+            } catch (Exception e) {
+                Log.e(TAG, "heartBeating: get ins/outs error:" + e);
+                return;
+            }
+
+            while (isHeartBeating) {
+                try {
+                    TimeUnit.SECONDS.sleep(SOCKET_HEART_BEATING);
+                    // Log.d(TAG, "actionPerformed: lock released");
+                    bw = new BufferedWriter(new OutputStreamWriter(os));
+                    bw.write(Constants.COMMAND_HEART_BEATING);
+                    bw.flush();
+                    Log.d(TAG, "heartBeating: 发送命令结束，等待结果");
+
+                    //读取服务器返回的消息
+                    br = new BufferedReader(new InputStreamReader(is));
+                    String mess = br.readLine();
+                    Log.d(TAG, "heartBeating: 服务器：" + mess);
+                } catch (InterruptedException | IOException e) {
+                    Log.e(TAG, "heartBeating: e:" + e);
+                    break;
+                }
+            }
+            IOUtil.silenceClose(is);
+            IOUtil.silenceClose(os);
+        });
+    }
+
     /**
      * 后台任务，需要子线程处理的，理论上跑线程池更好
      * 目前测试阶段的话，就直接新建Thread吧
@@ -392,7 +445,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void doWorkBackground(Runnable work) {
         service.submit(work);
-        Log.i(TAG, "doWorkBackground: " + work);
+        Log.v(TAG, "doWorkBackground: " + work);
     }
 
     private boolean socketUnavailable() {
@@ -413,6 +466,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void clear() {
+        isHeartBeating = false;
         if (socket != null) {
             IOUtil.silenceClose(socket);
             socket = null;

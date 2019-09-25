@@ -40,4 +40,8 @@ public class Constants {
     public static String COMMAND_GET_VERIFY_CODE = "{\"index\":25}\n";
     public static String COMMAND_STORAGE_INFO = "{\"index\":101}\n";
     public static String COMMAND_GET_PHONE_NUMBER = "{\"index\":15}\n";
+    /**
+     * 心跳 command
+     */
+    public static String COMMAND_HEART_BEATING = "{\"index\":2001}\n";
 }

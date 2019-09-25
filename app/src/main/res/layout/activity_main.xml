@@ -98,6 +98,15 @@
             android:text="锁屏/解锁屏幕" />
 
         <Button
+            android:id="@+id/btn_heart_beating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/btn_lock_unlock"
+            android:layout_toEndOf="@id/btn_lock_unlock"
+            android:layout_marginStart="5dp"
+            android:text="开始心跳" />
+
+        <Button
             android:id="@+id/btn_ckbox_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
