@@ -39,5 +39,5 @@ public class Constants {
     public static String COMMAND_SEND_SMS = "{\"index\":24, \"sms\": {\"number\":\"10086\",\"message\":\"10086 txt2\"}}\n";
     public static String COMMAND_GET_VERIFY_CODE = "{\"index\":25}\n";
     public static String COMMAND_STORAGE_INFO = "{\"index\":101}\n";
-    public static String COMMAND_GET_PHONE_NUMBER = "{\"index\":26}\n";
+    public static String COMMAND_GET_PHONE_NUMBER = "{\"index\":15}\n";
 }

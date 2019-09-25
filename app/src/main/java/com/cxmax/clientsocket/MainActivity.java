@@ -303,7 +303,8 @@ public class MainActivity extends AppCompatActivity {
                 socket.close();
             }
             socket = new Socket("127.0.0.1", 10086);
-            socket.setSoTimeout(1000 * 60);
+            socket.setKeepAlive(true);
+            socket.setSoTimeout(1000 * 60 * 3);
         } catch (Exception e) {
             Log.e(TAG, "connect: e:" + e);
         }
