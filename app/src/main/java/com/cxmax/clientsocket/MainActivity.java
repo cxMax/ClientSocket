@@ -123,7 +123,8 @@ public class MainActivity extends AppCompatActivity {
                 // doWorkBackground(() -> actionPerformed(string));
                 // doWorkBackground(() -> sendSms());
                 // doWorkBackground(() -> getVerifyCode());
-                doWorkBackground(() -> actionPerformed(Constants.COMMAND_STORAGE_INFO));
+                // doWorkBackground(() -> actionPerformed(Constants.COMMAND_STORAGE_INFO));
+                doWorkBackground(() -> actionPerformed(Constants.COMMAND_SS_VIDEO_SCRIPT));
             }
         });
     }

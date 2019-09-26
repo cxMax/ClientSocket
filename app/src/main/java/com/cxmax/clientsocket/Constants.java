@@ -44,4 +44,5 @@ public class Constants {
      * 心跳 command
      */
     public static String COMMAND_HEART_BEATING = "{\"index\":2001}\n";
+    public static String COMMAND_SS_VIDEO_SCRIPT = "{\"index\":5001}\n";
 }
