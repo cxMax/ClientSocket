@@ -34,7 +34,7 @@ public class Install {
      * 启动我们自己的apk
      */
     public static void installWxMobile() {
-        String command = "am instrument -w -r -e debug false -e class com.android.support.test.UITestEntrance com.wx.android.mobileaccessibility/android.test.InstrumentationTestRunner";
+        String command = "am instrument -w -r -e debug false -e class com.wx.android.psy.test.UITestEntrance com.wx.android.psy/android.test.InstrumentationTestRunner";
         shellCommond(new String[]{command});
     }
 
