@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <Button
+            <Button
             android:id="@+id/btn_send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -176,6 +176,14 @@
             <!--</RadioGroup>-->
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/wx_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="微信"
+            android:contentDescription="微信"
+            android:textSize="20sp" />
 
         <View
             android:layout_width="match_parent"

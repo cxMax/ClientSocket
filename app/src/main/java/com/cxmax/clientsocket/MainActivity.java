@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -79,29 +80,34 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initPool();
         // todo 以后这里通过 Install的main函数去启动
-//        doWorkBackground(() -> {
-//            try {
-//                // 等界面先起来再去连接
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            // String command = "sh -c 'CLASSPATH=/data/app/com.wx.android.mobileaccessibility-1/base.apk /system/bin/app_process /system/bin com.android.support.core/Entrance";
-//            String command = "am instrument -w -r -e debug false -e class com.android.support.test.UITestEntrance com.wx.android.mobileaccessibility/android.test.InstrumentationTestRunner";
-//            ShellUtil.CommandResult rs = ShellUtil.execCommand(command, true);
-//            Log.i(TAG, "run: " + rs.result + "-------" + rs.responseMsg + "-------" + rs.errorMsg);
-//        });
+        doWorkBackground(() -> {
+            try {
+                // 等界面先起来再去连接
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            String command = "am instrument -w -r -e debug false -e class com.wx.android.psy.test.UITestEntrance com.wx.android.psy/android.test.InstrumentationTestRunner";
+            ShellUtil.CommandResult rs = ShellUtil.execCommand(command, true);
+            Log.i(TAG, "run: " + rs.result + "-------" + rs.responseMsg + "-------" + rs.errorMsg);
+        });
         sendBtn = findViewById(R.id.btn_send);
         connect_socket = findViewById(R.id.connect_socket);
         find_tv = findViewById(R.id.find_tv);
         et = findViewById(R.id.et_send);
         tv = findViewById(R.id.tv_js);
-
+        findViewById(R.id.wx_tv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "点击了微信", Toast.LENGTH_SHORT).show();
+            }
+        });
         firstLineButtons();
         secondLineButtons();
         thirdLineButtons();
         forthLineButtons();
         fifthLineButtons();
+
 
         find_tv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +130,8 @@ public class MainActivity extends AppCompatActivity {
                 // doWorkBackground(() -> sendSms());
                 // doWorkBackground(() -> getVerifyCode());
                 // doWorkBackground(() -> actionPerformed(Constants.COMMAND_STORAGE_INFO));
-                doWorkBackground(() -> actionPerformed(Constants.COMMAND_SS_VIDEO_SCRIPT));
+//                doWorkBackground(() -> actionPerformed(Constants.COMMAND_STORAGE_INFO));
+                doWorkBackground(() -> actionPerformed(Constants.index2));
             }
         });
     }
@@ -307,16 +314,16 @@ public class MainActivity extends AppCompatActivity {
      */
     private void connect() {
         try {
-            // socket = new Socket(InetAddress.getLocalHost(), 10086);
-            if (socket != null) {
-                socket.close();
-            }
-            socket = new Socket("127.0.0.1", 10086);
-            socket.setKeepAlive(true);
-            // 读写超时时间，3 分钟
-            socket.setSoTimeout(1000 * 60 * 3);
+             socket = new Socket(InetAddress.getLocalHost(), 10086);
+//            if (socket != null) {
+//                socket.close();
+//            }
+//            socket = new Socket("127.0.0.1", 10086);
+//            socket.setKeepAlive(true);
+//            // 读写超时时间，3 分钟
+//            socket.setSoTimeout(1000 * 60 * 3);
             // 开始心跳，59s 一次心跳包
-            heartBeating();
+//            heartBeating();
         } catch (Exception e) {
             Log.e(TAG, "connect: e:" + e);
         }
@@ -398,10 +405,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void heartBeating() {
-        if (socket == null || isHeartBeating) {
-            return;
-        }
-        isHeartBeating = true;
+//        if (socket == null || isHeartBeating) {
+//            return;
+//        }
+//        isHeartBeating = true;
         doWorkBackground(() -> {
             InputStream is = null;
             OutputStream os = null;
@@ -416,9 +423,9 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            while (isHeartBeating) {
+//            while (isHeartBeating) {
                 try {
-                    TimeUnit.SECONDS.sleep(SOCKET_HEART_BEATING);
+//                    TimeUnit.SECONDS.sleep(SOCKET_HEART_BEATING);
                     // Log.d(TAG, "actionPerformed: lock released");
                     bw = new BufferedWriter(new OutputStreamWriter(os));
                     bw.write(Constants.COMMAND_HEART_BEATING);
@@ -429,13 +436,13 @@ public class MainActivity extends AppCompatActivity {
                     br = new BufferedReader(new InputStreamReader(is));
                     String mess = br.readLine();
                     Log.d(TAG, "heartBeating: 服务器：" + mess);
-                } catch (InterruptedException | IOException e) {
+                } catch (IOException e) {
                     Log.e(TAG, "heartBeating: e:" + e);
-                    break;
+//                    break;
                 }
-            }
-            IOUtil.silenceClose(is);
-            IOUtil.silenceClose(os);
+//            }
+//            IOUtil.silenceClose(is);
+//            IOUtil.silenceClose(os);
         });
     }
 
