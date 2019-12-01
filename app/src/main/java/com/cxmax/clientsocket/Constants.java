@@ -13,13 +13,15 @@ public class Constants {
     /**
      * 往edit text 输入值
      */
-    public static String index5 = "{\"index\": 5,\"ui\": {\"index\": -1,\"text\": \"\",\"resource_id\": \"\",\"content_desc\": \"et_send\",\"class\": \"android.widget.EditText\"},\"input\": \"我是\"}\n";
-    public static String index2 = "{\"index\":2,\"ui\": {\"index\": 0,\"text\": \"微信\",\"content_desc\": \"微信\",\"resource_id\": [\"wx_tv\"],\"ui_class\": \"android.widget.TextView\"}}\n";
+    public static String index5 = "{\"index\": 5,\"uiInfo\": {\"index\": -1,\"text\": \"\",\"resource_id\": [\"\"],\"content_desc\": \"et_send\",\"class\": \"android.widget.EditText\"},\"input\": \"我是\"}\n";
+    public static String index1 = "{\"index\": 1,\"uiInfo\": {\"index\": 0,\"text\": \"\",\"content_desc\": \"\",\"resource_id\": \"com.cxmax.clientsocket:id/wx_tv11\",\"ui_class\": \"\"}}\n";
 
     /**
      * 锁屏
      */
     public static String index12 = "{\"index\":12}\n";
+    public static String index27 = "{\"index\":27}\n";
+    public static String index26 = "{\"index\":26}\n";
 
     /**
      * 解锁屏幕

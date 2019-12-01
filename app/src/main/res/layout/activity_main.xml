@@ -185,6 +185,14 @@
             android:contentDescription="微信"
             android:textSize="20sp" />
 
+        <TextView
+            android:id="@+id/recycler_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="跳转到列表"
+            android:contentDescription="微信"
+            android:textSize="20sp" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="2000dp" />

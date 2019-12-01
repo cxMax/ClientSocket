@@ -3,6 +3,7 @@ package com.cxmax.clientsocket;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -102,6 +103,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "点击了微信", Toast.LENGTH_SHORT).show();
             }
         });
+        findViewById(R.id.recycler_tv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, RecyclerActivity.class));
+            }
+        });
         firstLineButtons();
         secondLineButtons();
         thirdLineButtons();
@@ -131,7 +138,9 @@ public class MainActivity extends AppCompatActivity {
                 // doWorkBackground(() -> getVerifyCode());
                 // doWorkBackground(() -> actionPerformed(Constants.COMMAND_STORAGE_INFO));
 //                doWorkBackground(() -> actionPerformed(Constants.COMMAND_STORAGE_INFO));
-                doWorkBackground(() -> actionPerformed(Constants.index2));
+                doWorkBackground(() -> {
+                    actionPerformed(Constants.index1);
+                });
             }
         });
     }
