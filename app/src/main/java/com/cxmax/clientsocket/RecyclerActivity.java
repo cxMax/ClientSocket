@@ -46,9 +46,12 @@ public class RecyclerActivity extends AppCompatActivity {
      */
     private void initData() {
         data = new ArrayList<>();
-        for (int i = 'A'; i < 'z'; i++)
-        {
-            data.add("这是" + (char) i + "项");
-        }
+//        for (int i = 'A'; i < 'z'; i++)
+//        {
+            data.add("这是" + 1 + "项");
+            data.add("这是" + 2 + "项");
+            data.add("这是" + 3 + "项");
+            data.add("这是" + 4 + "项");
+//        }
     }
 }

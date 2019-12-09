@@ -107,6 +107,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, RecyclerActivity.class));
+                doWorkBackground(() -> {
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    actionPerformed(Constants.index1004_list);
+                });
             }
         });
         firstLineButtons();
@@ -139,7 +147,12 @@ public class MainActivity extends AppCompatActivity {
                 // doWorkBackground(() -> actionPerformed(Constants.COMMAND_STORAGE_INFO));
 //                doWorkBackground(() -> actionPerformed(Constants.COMMAND_STORAGE_INFO));
                 doWorkBackground(() -> {
-                    actionPerformed(Constants.index1);
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    actionPerformed(Constants.index1004_toutiao);
                 });
             }
         });
