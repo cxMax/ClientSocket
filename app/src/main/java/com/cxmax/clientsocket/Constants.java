@@ -8,7 +8,7 @@ package com.cxmax.clientsocket;
  * Created by caixi on 2019-08-28.
  */
 public class Constants {
-git
+
     public static final String TAG = "WxMobile";
     /**
      * 往edit text 输入值
@@ -43,6 +43,7 @@ git
     public static String index23 = "{\"index\":23}\n";
     public static String COMMAND_CKB_TO_SELECT = "{\"index\":16}\n";
     public static String COMMAND_CKB_UN_SELECT = "{\"index\":17}\n";
+    public static String COMMAND_SAVE_SDCARD_IMG = "{\"index\":19, \"image_path\":\"/sdcard/123.png\"}\n";
     /**
      * 开/关静音
      */
