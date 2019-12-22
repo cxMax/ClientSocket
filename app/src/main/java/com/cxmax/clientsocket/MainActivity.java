@@ -147,7 +147,12 @@ public class MainActivity extends AppCompatActivity {
                 // doWorkBackground(() -> actionPerformed(Constants.COMMAND_STORAGE_INFO));
 //                doWorkBackground(() -> actionPerformed(Constants.COMMAND_STORAGE_INFO));
                 doWorkBackground(() -> {
-                    actionPerformed(Constants.COMMAND_SAVE_SDCARD_IMG);
+                    try {
+                        Thread.sleep(5*1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    actionPerformed(Constants.index1004_toutiao);
                 });
             }
         });
