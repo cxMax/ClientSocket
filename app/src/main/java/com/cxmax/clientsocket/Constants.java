@@ -30,6 +30,15 @@ public class Constants {
             "\"list_resource_id\": \"com.meizu.media.reader:id/a8f\",\"list_ui_class\": \"flyme.support.v7.widget.RecyclerView\",\"list_text\": []}}\n";
 
 
+    public static String index1004_weixin = "{\"index\": 1004,\"uiInfo\": {\"index\": 0,\"text\": \"\",\"content_desc\": \"\"," +
+            "\"resource_id\": \"com.tencent.mm:id/baj\",\"ui_class\": \"android.view.View\"," +
+            "\"list_resource_id\": \"com.tencent.mm:id/dcf\",\"list_ui_class\": \"android.widget.ListView\",\"list_text\": []}}\n";
+
+    public static String index1004_douyin = "{\"index\": 1004,\"uiInfo\": {\"index\": 0,\"text\": \"\",\"content_desc\": \"\"," +
+            "\"resource_id\": \"com.ss.android.ugc.aweme:id/f5p\",\"ui_class\": \"android.widget.TextView\"," +
+            "\"list_resource_id\": \"com.ss.android.ugc.aweme:id/dgo\",\"list_ui_class\": \"android.support.v7.widget.RecyclerView\",\"list_text\": []}}\n";
+
+
     /**
      * 锁屏
      */
