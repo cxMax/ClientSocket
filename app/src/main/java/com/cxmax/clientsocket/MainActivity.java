@@ -81,17 +81,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initPool();
         // todo 以后这里通过 Install的main函数去启动
-//        doWorkBackground(() -> {
-//            try {
-//                // 等界面先起来再去连接
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            String command = "am instrument -w -r -e debug false -e class com.wx.android.psy.test.UITestEntrance com.wx.android.psy/android.test.InstrumentationTestRunner";
-//            ShellUtil.CommandResult rs = ShellUtil.execCommand(command, true);
-//            Log.i(TAG, "run: " + rs.result + "-------" + rs.responseMsg + "-------" + rs.errorMsg);
-//        });
+        doWorkBackground(() -> {
+            try {
+                // 等界面先起来再去连接
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            String command = "am instrument -w -r -e debug false -e class com.wx.android.psy.test.UITestEntrance com.wx.android.psy/android.test.InstrumentationTestRunner";
+            ShellUtil.CommandResult rs = ShellUtil.execCommand(command, true);
+            Log.i(TAG, "run: " + rs.result + "-------" + rs.responseMsg + "-------" + rs.errorMsg);
+        });
         sendBtn = findViewById(R.id.btn_send);
         connect_socket = findViewById(R.id.connect_socket);
         find_tv = findViewById(R.id.find_tv);
@@ -147,12 +147,12 @@ public class MainActivity extends AppCompatActivity {
                 // doWorkBackground(() -> actionPerformed(Constants.COMMAND_STORAGE_INFO));
 //                doWorkBackground(() -> actionPerformed(Constants.COMMAND_STORAGE_INFO));
                 doWorkBackground(() -> {
-                    try {
-                        Thread.sleep(5*1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    actionPerformed(Constants.index1004_douyin);
+//                    try {
+//                        Thread.sleep(5*1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+                    actionPerformed(Constants.index1);
                 });
             }
         });

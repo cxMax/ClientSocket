@@ -14,7 +14,7 @@ public class Constants {
      * 往edit text 输入值
      */
     public static String index5 = "{\"index\": 5,\"uiInfo\": {\"index\": -1,\"text\": \"\",\"resource_id\": [\"\"],\"content_desc\": \"et_send\",\"class\": \"android.widget.EditText\"},\"input\": \"我是\"}\n";
-    public static String index1 = "{\"index\": 1,\"uiInfo\": {\"index\": 0,\"text\": \"\",\"content_desc\": \"\",\"resource_id\": \"com.cxmax.clientsocket:id/wx_tv11\",\"ui_class\": \"\"}}\n";
+    public static String index1 = "{\"index\": 1003,\"uiInfo\": {\"index\": 0,\"text\": \"微信\",\"content_desc\": \"\",\"resource_id\": \"wx_tv|wx_tv2|wx_tv3\",\"ui_class\": \"\"}}\n";
 
     public static String index1003_list_item = "{\"index\": 1003,\"uiInfo\": {\"index\": 0,\"text\": \"\",\"content_desc\": \"\",\"resource_id\": \"com.cxmax.clientsocket:id/item_recyclerview_tv\",\"ui_class\": \"android.widget.TextView\"}}\n";
     public static String index1004_list = "{\"index\": 1004,\"uiInfo\": {\"index\": 0,\"text\": \"\",\"content_desc\": \"\"," +
