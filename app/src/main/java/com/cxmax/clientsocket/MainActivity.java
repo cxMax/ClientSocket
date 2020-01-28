@@ -146,14 +146,14 @@ public class MainActivity extends AppCompatActivity {
                 // doWorkBackground(() -> getVerifyCode());
                 // doWorkBackground(() -> actionPerformed(Constants.COMMAND_STORAGE_INFO));
 //                doWorkBackground(() -> actionPerformed(Constants.COMMAND_STORAGE_INFO));
-                doWorkBackground(() -> {
+//                doWorkBackground(() -> {
 //                    try {
 //                        Thread.sleep(5*1000);
 //                    } catch (InterruptedException e) {
 //                        e.printStackTrace();
 //                    }
-                    actionPerformed(Constants.index1);
-                });
+//                });
+                actionPerformed(Constants.index2);
             }
         });
     }
