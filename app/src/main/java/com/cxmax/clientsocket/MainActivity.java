@@ -14,6 +14,7 @@ import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.Log;
 import android.util.TimeUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -75,6 +76,13 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.e(TAG, "onKeyDown: " + keyCode);
+        return super.onKeyDown(keyCode, event);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,14 +115,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, RecyclerActivity.class));
-                doWorkBackground(() -> {
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    actionPerformed(Constants.index1004_list);
-                });
+//                doWorkBackground(() -> {
+//                    try {
+//                        Thread.sleep(3000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    actionPerformed(Constants.index2);
+//                });
             }
         });
         firstLineButtons();
@@ -146,14 +154,15 @@ public class MainActivity extends AppCompatActivity {
                 // doWorkBackground(() -> getVerifyCode());
                 // doWorkBackground(() -> actionPerformed(Constants.COMMAND_STORAGE_INFO));
 //                doWorkBackground(() -> actionPerformed(Constants.COMMAND_STORAGE_INFO));
-//                doWorkBackground(() -> {
+                doWorkBackground(() -> {
 //                    try {
-//                        Thread.sleep(5*1000);
+//                        Thread.sleep(6*1000);
 //                    } catch (InterruptedException e) {
 //                        e.printStackTrace();
 //                    }
-//                });
-                actionPerformed(Constants.index2);
+//                    getVerifyCode();
+                    actionPerformed(Constants.index5);
+                });
             }
         });
     }
@@ -167,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         });
         findViewById(R.id.btn_get_number).setOnClickListener(view -> {
             doWorkBackground(() -> {
-                actionPerformed(Constants.COMMAND_GET_PHONE_NUMBER);
+                actionPerformed(Constants.COMMAND_SAVE_SDCARD_IMG);
             });
         });
     }
